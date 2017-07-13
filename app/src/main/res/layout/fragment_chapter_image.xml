@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.meo.stonymoon.enrichedday.ui.discovery.child.ChapterImageFragment">
+
+    <com.meo.stonymoon.enrichedday.view.PinchImageView
+        android:id="@+id/chapter_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</FrameLayout>
