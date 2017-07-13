@@ -13,6 +13,7 @@ import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.BangumiFragment;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.BookFragment;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.ComicFragment;
+import com.meo.stonymoon.enrichedday.ui.discovery.child.RecommendFragment;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.TestFragment;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class DiscoveryFragment extends Fragment {
         titleTab.setupWithViewPager(viewPager);
 
         ArrayList<Fragment> mFragmentList = new ArrayList<>();
-        mFragmentList.add(new TestFragment());
+        mFragmentList.add(new RecommendFragment());
         mFragmentList.add(new BangumiFragment());
         mFragmentList.add(new ComicFragment());
         mFragmentList.add(new BookFragment());
@@ -69,7 +70,7 @@ public class DiscoveryFragment extends Fragment {
 
         viewPager.setAdapter(adapter);
         // 设置ViewPager最大缓存的页面个数(cpu消耗少)
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(4);
         //viewPager.addOnPageChangeListener(this);
         //mBinding.include.ivTitleGank.setSelected(true);
         viewPager.setCurrentItem(0);

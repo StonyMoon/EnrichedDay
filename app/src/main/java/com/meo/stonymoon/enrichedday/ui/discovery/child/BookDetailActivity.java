@@ -15,16 +15,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.meo.stonymoon.enrichedday.R;
-import com.meo.stonymoon.enrichedday.bean.BangumiDetailBean;
-import com.meo.stonymoon.enrichedday.util.HandleResponseUtil;
-import com.meo.stonymoon.enrichedday.util.HttpUtil;
 
-import java.io.IOException;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+
 
 public class BookDetailActivity extends AppCompatActivity {
     private ImageView coverImage;
@@ -39,7 +33,6 @@ public class BookDetailActivity extends AppCompatActivity {
     private CollapsingToolbarLayout toolbar;
     private ActionBar actionBar;
     private Toolbar tb;
-    private int id;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -54,7 +47,6 @@ public class BookDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        id = getIntent().getIntExtra("bangumiId", 1234);
 
         setContentView(R.layout.activity_book_detail);
         coverImage = (ImageView) findViewById(R.id.book_detail_cover_image);
