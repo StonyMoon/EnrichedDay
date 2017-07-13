@@ -15,6 +15,9 @@ public class BookBean {
         public String pubdate;
         public BookImage images;
         public String title;
+        public String summary;
+        @SerializedName("author_intro")
+        public String authorIntro;
 
     }
 

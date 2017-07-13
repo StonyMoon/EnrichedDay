@@ -1,6 +1,7 @@
 package com.meo.stonymoon.enrichedday.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.bean.BookBean;
+import com.meo.stonymoon.enrichedday.ui.discovery.child.BookDetailActivity;
 
 import java.util.List;
 
@@ -44,18 +46,25 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book, parent, false);
         final ViewHolder holder = new ViewHolder(view);
-//        holder.imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int position = holder.getAdapterPosition();
-//                BookBean.Book b = bookList.get(position-1);
-//                //Xrecycler刷新部分占了一个位置
-//                Intent intent = new Intent(mContext, PhotoActivity.class);
-//                intent.putExtra("imageUrl","http://kyoko.b0.upaiyun.com/pixiv-ranking/"+b.picUrl);
-//                mContext.startActivity(intent);
-//
-//            }
-//        });
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                BookBean.Book b = bookList.get(position - 1);
+                //Xrecycler刷新部分占了一个位置
+                Intent intent = new Intent(mContext, BookDetailActivity.class);
+                intent.putExtra("imageUrl", b.images.imageUrl);
+                intent.putExtra("title", b.title);
+                intent.putExtra("average", b.rating.average);
+                intent.putExtra("numRaters", b.rating.numRaters);
+                intent.putExtra("pubdate", b.pubdate);
+                intent.putExtra("authorIntro", b.authorIntro);
+                intent.putExtra("summary", b.summary);
+
+                mContext.startActivity(intent);
+
+            }
+        });
 
         return holder;
 

@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.meo.com.stonymoon.enrichedday.MainActivity"
+            android:name="com.meo.stonymoon.enrichedday.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,11 +22,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.meo.com.stonymoon.enrichedday.ui.discovery.child.BangumiDetailActivity"
+            android:name="com.meo.stonymoon.enrichedday.ui.discovery.child.BangumiDetailActivity"
             android:theme="@style/DetailActivityTheme" />
-        <activity android:name="com.meo.com.stonymoon.enrichedday.ui.discovery.child.ComicDetailActivity" />
-        <activity android:name="com.meo.com.stonymoon.enrichedday.ui.PhotoActivity" />
-        <activity android:name="com.meo.com.stonymoon.enrichedday.ui.discovery.child.ComicChapterActivity"></activity>
+        <activity android:name="com.meo.stonymoon.enrichedday.ui.discovery.child.ComicDetailActivity" />
+        <activity android:name="com.meo.stonymoon.enrichedday.ui.PhotoActivity" />
+        <activity android:name="com.meo.stonymoon.enrichedday.ui.discovery.child.ComicChapterActivity" />
+        <activity android:name=".ui.discovery.child.BookDetailActivity"></activity>
     </application>
 
 </manifest>
