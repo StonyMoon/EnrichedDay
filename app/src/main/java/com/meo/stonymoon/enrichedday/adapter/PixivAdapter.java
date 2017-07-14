@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -14,6 +15,8 @@ import com.meo.stonymoon.enrichedday.bean.PixivBean;
 import com.meo.stonymoon.enrichedday.ui.PhotoActivity;
 
 import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 
 public class PixivAdapter extends RecyclerView.Adapter<PixivAdapter.ViewHolder> {
@@ -66,6 +69,12 @@ public class PixivAdapter extends RecyclerView.Adapter<PixivAdapter.ViewHolder> 
 
     public void onBindViewHolder(ViewHolder holder, int position) {
         PixivBean.PictureBean pictureBean = pixivBeanList.get(position);
+//        WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+//        float width = (float)wm.getDefaultDisplay().getWidth();
+//        float itemWidth = ((width-4)/2);
+//        float scale = (itemWidth)/
+
+
         Glide.with(mContext)
                 .load("http://kyoko.b0.upaiyun.com/pixiv-ranking/" + pictureBean.picUrl)
                 .into(holder.imageView);

@@ -16,6 +16,7 @@ import com.meo.stonymoon.enrichedday.adapter.EverydayAdapter;
 import com.meo.stonymoon.enrichedday.bean.BangumiBean;
 import com.meo.stonymoon.enrichedday.bean.BookBean;
 import com.meo.stonymoon.enrichedday.bean.ComicBean;
+import com.meo.stonymoon.enrichedday.bean.PixivBean;
 import com.meo.stonymoon.enrichedday.model.EverydayModel;
 import com.meo.stonymoon.enrichedday.util.HandleResponseUtil;
 import com.meo.stonymoon.enrichedday.util.HttpUtil;
@@ -69,7 +70,7 @@ public class RecommendFragment extends Fragment {
             modelList.add(new EverydayModel(TYPE_THREE, "https://i.pximg.net/c/240x480/img-master/img/2017/07/13/00/04/52/63837665_p0_master1200.jpg", ""));
         }
         modelList.add(new EverydayModel(TYPE_TITLE, "", "推荐漫画"));
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 2; i++) {
             modelList.add(new EverydayModel(TYPE_TWO, "https://i.pximg.net/c/240x480/img-master/img/2017/07/13/00/04/52/63837665_p0_master1200.jpg", ""));
         }
 
@@ -77,11 +78,17 @@ public class RecommendFragment extends Fragment {
         for (int i = 0; i < 6; i++) {
             modelList.add(new EverydayModel(TYPE_THREE, "https://i.pximg.net/c/240x480/img-master/img/2017/07/13/00/04/52/63837665_p0_master1200.jpg", ""));
         }
+        modelList.add(new EverydayModel(TYPE_TITLE, "", "P站日榜"));
+        for (int i = 0; i < 6; i++) {
+            modelList.add(new EverydayModel(TYPE_THREE, "https://i.pximg.net/c/240x480/img-master/img/2017/07/13/00/04/52/63837665_p0_master1200.jpg", ""));
+        }
+
+
 
         loadBangumi();
         loadComic();
         loadBook();
-        //modelList.add(new EverydayModel(TYPE_TITLE,"","P站日榜"));
+
         loadPixiv();
         adapter.notifyDataSetChanged();
 
@@ -104,6 +111,8 @@ public class RecommendFragment extends Fragment {
                     BangumiBean.Bangumi bangumi = bangumiBean.result.bangumiList.get(i);
                     modelList.set(2 + i, new EverydayModel(TYPE_THREE, bangumi.cover, bangumi.title));
                 }
+                notifyDataChanged();
+
             }
         });
     }
@@ -123,10 +132,11 @@ public class RecommendFragment extends Fragment {
                 String jsonBody = response.body().string();
                 ComicBean comicBean = HandleResponseUtil.handleComicBeanRecommendResponse(jsonBody);
 
-                for (int i = 0; i < 8; i++) {
+                for (int i = 0; i < 2; i++) {
                     ComicBean.Comic comic = comicBean.data.returnData.comics.get(i);
                     modelList.set(9 + i, new EverydayModel(TYPE_TWO, comic.cover, comic.name));
                 }
+                notifyDataChanged();
 
             }
         });
@@ -149,9 +159,10 @@ public class RecommendFragment extends Fragment {
                 BookBean book = HandleResponseUtil.handleBookResponse(jsonBody);
                 for (int i = 0; i < 6; i++) {
                     BookBean.Book b = book.books.get(i);
-                    //18为上面的行数总和
-                    modelList.set(18 + i, new EverydayModel(TYPE_THREE, b.images.imageUrl, b.title));
+                    //12为上面的行数总和
+                    modelList.set(12 + i, new EverydayModel(TYPE_THREE, b.images.imageUrl, b.title));
                 }
+                notifyDataChanged();
 
 
             }
@@ -161,6 +172,43 @@ public class RecommendFragment extends Fragment {
     }
 
     private void loadPixiv() {
+
+        HttpUtil.sendOkHttpRequest("http://www.moe123.net/module/pixiv", new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //Toast.makeText(getContext(),"加载失败",Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String jsonBody = response.body().string();
+                PixivBean pb = HandleResponseUtil.handlePixivResponse(jsonBody);
+                for (int i = 0; i < 6; i++) {
+                    PixivBean.PictureBean b = pb.pictureBean.get(i);
+                    //19为上面的行数总和
+                    modelList.set(19 + i, new EverydayModel(TYPE_THREE, "http://kyoko.b0.upaiyun.com/pixiv-ranking/" + b.picUrl, ""));
+                }
+                notifyDataChanged();
+
+
+            }
+        });
+
+
+
+
+    }
+
+    private void notifyDataChanged() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        });
+
 
     }
 

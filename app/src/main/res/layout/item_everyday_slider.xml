@@ -8,8 +8,8 @@
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/everyday_slider"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        app:pager_animation="Accordion"
+        android:layout_height="140dp"
+        app:pager_animation="Default"
         app:auto_cycle="true"
         app:indicator_visibility="visible"></com.daimajia.slider.library.SliderLayout>
 
