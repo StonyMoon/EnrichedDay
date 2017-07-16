@@ -79,6 +79,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         BookBean.Book book = bookList.get(position);
         Glide.with(mContext)
                 .load(book.images.imageUrl)
+                .placeholder(R.drawable.placeholder)
                 .into(holder.imageView);
         holder.bookText.setText(book.title);
 

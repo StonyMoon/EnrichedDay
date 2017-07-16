@@ -7,10 +7,11 @@
 
     >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/music_load"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="hello_music_fragment" />
+        android:src="@drawable/load_up" />
+
 
 </FrameLayout>

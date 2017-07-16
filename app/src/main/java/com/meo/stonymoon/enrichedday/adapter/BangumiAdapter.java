@@ -52,11 +52,11 @@ public class BangumiAdapter extends RecyclerView.Adapter<BangumiAdapter.ViewHold
                 BangumiBean.Bangumi b = bangumiList.get(position - 1);
                 //Xrecycler刷新部分占了一个位置
                 Intent intent = new Intent(mContext, BangumiDetailActivity.class);
-                int id = Integer.parseInt(b.url.split("/")[4]);
+                String id = b.url.split("/")[4];
                 intent.putExtra("bangumiId", id);
                 mContext.startActivity(intent);
-
             }
+
         });
 
 
@@ -73,6 +73,7 @@ public class BangumiAdapter extends RecyclerView.Adapter<BangumiAdapter.ViewHold
         BangumiBean.Bangumi bangumi = bangumiList.get(position);
         Glide.with(mContext)
                 .load(bangumi.cover)
+                .placeholder(R.drawable.placeholder)
                 .into(holder.imageView);
         holder.titleView.setText(bangumi.title);
     }

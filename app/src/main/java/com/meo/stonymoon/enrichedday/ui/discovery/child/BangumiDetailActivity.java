@@ -34,7 +34,7 @@ public class BangumiDetailActivity extends AppCompatActivity implements View.OnC
     private CollapsingToolbarLayout toolbar;
     private ActionBar actionBar;
     private Toolbar tb;
-    private int id;
+    private String id;
     private FloatingActionButton playButton;
 
     @Override
@@ -50,7 +50,7 @@ public class BangumiDetailActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        id = getIntent().getIntExtra("bangumiId", 1234);
+        id = getIntent().getStringExtra("bangumiId");
 
         setContentView(R.layout.activity_bangumi_detail);
         coverImage = (ImageView) findViewById(R.id.bangumi_detail_cover_image);
@@ -76,7 +76,7 @@ public class BangumiDetailActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    private void initDetail(int id) {
+    private void initDetail(String id) {
         HttpUtil.sendOkHttpRequest("http://bangumi.bilibili.com/jsonp/seasoninfo/" + id + ".ver?callback=seasonListCallback&jsonp=jsonp&_=1499651889555", new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

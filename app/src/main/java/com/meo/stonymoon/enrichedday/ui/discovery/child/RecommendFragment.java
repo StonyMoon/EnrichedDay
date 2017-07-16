@@ -9,8 +9,11 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.meo.stonymoon.enrichedday.MainActivity;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.adapter.EverydayAdapter;
 import com.meo.stonymoon.enrichedday.bean.BangumiBean;
@@ -18,8 +21,10 @@ import com.meo.stonymoon.enrichedday.bean.BookBean;
 import com.meo.stonymoon.enrichedday.bean.ComicBean;
 import com.meo.stonymoon.enrichedday.bean.PixivBean;
 import com.meo.stonymoon.enrichedday.model.EverydayModel;
+import com.meo.stonymoon.enrichedday.ui.discovery.DiscoveryFragment;
 import com.meo.stonymoon.enrichedday.util.HandleResponseUtil;
 import com.meo.stonymoon.enrichedday.util.HttpUtil;
+import com.meo.stonymoon.enrichedday.util.MyItemDecoration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +40,12 @@ import static com.meo.stonymoon.enrichedday.model.EverydayModel.TYPE_TITLE;
 import static com.meo.stonymoon.enrichedday.model.EverydayModel.TYPE_TWO;
 
 
+
 public class RecommendFragment extends Fragment {
+    /*
+     * 让这个碎片持有一个引用
+     */
+
     RecyclerView recyclerView;
     List<EverydayModel> modelList = new ArrayList<>();
     EverydayAdapter adapter = new EverydayAdapter(modelList);
@@ -49,9 +59,8 @@ public class RecommendFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recommend, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.everyday_recyclerview);
         GridLayoutManager manager = new GridLayoutManager(getContext(), 6);
-
         recyclerView.setLayoutManager(manager);
-
+        recyclerView.addItemDecoration(new MyItemDecoration(2, 5));
         recyclerView.setAdapter(adapter);
         initData();
 
@@ -65,20 +74,20 @@ public class RecommendFragment extends Fragment {
      */
     private void initData() {
         modelList.add(new EverydayModel(TYPE_SLIDER, "", ""));
-        modelList.add(new EverydayModel(TYPE_TITLE, "", "推荐番剧"));
+        modelList.add(new EverydayModel(TYPE_TITLE, "2", "推荐番剧"));
         for (int i = 0; i < 6; i++) {
             modelList.add(new EverydayModel(TYPE_THREE, "https://i.pximg.net/c/240x480/img-master/img/2017/07/13/00/04/52/63837665_p0_master1200.jpg", ""));
         }
-        modelList.add(new EverydayModel(TYPE_TITLE, "", "推荐漫画"));
+        modelList.add(new EverydayModel(TYPE_TITLE, "3", "推荐漫画"));
         for (int i = 0; i < 2; i++) {
             modelList.add(new EverydayModel(TYPE_TWO, "https://i.pximg.net/c/240x480/img-master/img/2017/07/13/00/04/52/63837665_p0_master1200.jpg", ""));
         }
 
-        modelList.add(new EverydayModel(TYPE_TITLE, "", "推荐小说"));
+        modelList.add(new EverydayModel(TYPE_TITLE, "4", "推荐小说"));
         for (int i = 0; i < 6; i++) {
             modelList.add(new EverydayModel(TYPE_THREE, "https://i.pximg.net/c/240x480/img-master/img/2017/07/13/00/04/52/63837665_p0_master1200.jpg", ""));
         }
-        modelList.add(new EverydayModel(TYPE_TITLE, "", "P站日榜"));
+        modelList.add(new EverydayModel(TYPE_TITLE, "5", "P站日榜"));
         for (int i = 0; i < 6; i++) {
             modelList.add(new EverydayModel(TYPE_THREE, "https://i.pximg.net/c/240x480/img-master/img/2017/07/13/00/04/52/63837665_p0_master1200.jpg", ""));
         }
@@ -109,7 +118,9 @@ public class RecommendFragment extends Fragment {
                 BangumiBean bangumiBean = HandleResponseUtil.handleBangumiRecommendResponse(jsonBody);
                 for (int i = 0; i < 6; i++) {
                     BangumiBean.Bangumi bangumi = bangumiBean.result.bangumiList.get(i);
-                    modelList.set(2 + i, new EverydayModel(TYPE_THREE, bangumi.cover, bangumi.title));
+                    EverydayModel bangumiModel = new EverydayModel(TYPE_THREE, bangumi.cover, bangumi.title, "bangumi", bangumi);
+                    bangumiModel.detailMap.put("bangumiId", bangumi.url.split("/")[4]);
+                    modelList.set(2 + i, bangumiModel);
                 }
                 notifyDataChanged();
 
@@ -134,7 +145,7 @@ public class RecommendFragment extends Fragment {
 
                 for (int i = 0; i < 2; i++) {
                     ComicBean.Comic comic = comicBean.data.returnData.comics.get(i);
-                    modelList.set(9 + i, new EverydayModel(TYPE_TWO, comic.cover, comic.name));
+                    modelList.set(9 + i, new EverydayModel(TYPE_TWO, comic.cover, comic.name, "comic", comic));
                 }
                 notifyDataChanged();
 
@@ -160,7 +171,7 @@ public class RecommendFragment extends Fragment {
                 for (int i = 0; i < 6; i++) {
                     BookBean.Book b = book.books.get(i);
                     //12为上面的行数总和
-                    modelList.set(12 + i, new EverydayModel(TYPE_THREE, b.images.imageUrl, b.title));
+                    modelList.set(12 + i, new EverydayModel(TYPE_THREE, b.images.imageUrl, b.title, "book", b));
                 }
                 notifyDataChanged();
 
@@ -188,17 +199,11 @@ public class RecommendFragment extends Fragment {
                 for (int i = 0; i < 6; i++) {
                     PixivBean.PictureBean b = pb.pictureBean.get(i);
                     //19为上面的行数总和
-                    modelList.set(19 + i, new EverydayModel(TYPE_THREE, "http://kyoko.b0.upaiyun.com/pixiv-ranking/" + b.picUrl, ""));
+                    modelList.set(19 + i, new EverydayModel(TYPE_THREE, "http://kyoko.b0.upaiyun.com/pixiv-ranking/" + b.picUrl, "", "pixiv", b));
                 }
                 notifyDataChanged();
-
-
             }
         });
-
-
-
-
     }
 
     private void notifyDataChanged() {
@@ -211,7 +216,6 @@ public class RecommendFragment extends Fragment {
 
 
     }
-
 
 
 }

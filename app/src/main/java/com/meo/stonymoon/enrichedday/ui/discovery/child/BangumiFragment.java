@@ -3,6 +3,7 @@ package com.meo.stonymoon.enrichedday.ui.discovery.child;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.meo.stonymoon.enrichedday.bean.BangumiBean;
 import com.meo.stonymoon.enrichedday.util.HandleResponseUtil;
 import com.meo.stonymoon.enrichedday.util.HttpUtil;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.meo.stonymoon.enrichedday.util.MyItemDecoration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +43,9 @@ public class BangumiFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_bangumi, container, false);
         recyclerView = (XRecyclerView) view.findViewById(R.id.bangumi_recycerview);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.addItemDecoration(new MyItemDecoration(2, 5));
         recyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {

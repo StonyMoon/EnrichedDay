@@ -52,15 +52,13 @@ public class ComicAdapter extends RecyclerView.Adapter<ComicAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                ComicBean.Comic b = comicList.get(position - 1);
+                ComicBean.Comic c = comicList.get(position - 1);
                 //Xrecycler刷新部分占了一个位置
                 Intent intent = new Intent(mContext, ComicDetailActivity.class);
-                intent.putExtra("title", b.name);
-                intent.putExtra("evaluate", b.description);
-                intent.putExtra("coverUrl", b.cover);
-                intent.putExtra("id", b.id);
-
-
+                intent.putExtra("title", c.name);
+                intent.putExtra("evaluate", c.description);
+                intent.putExtra("coverUrl", c.cover);
+                intent.putExtra("id", c.id);
                 mContext.startActivity(intent);
 
             }
@@ -80,6 +78,7 @@ public class ComicAdapter extends RecyclerView.Adapter<ComicAdapter.ViewHolder> 
         ComicBean.Comic comic = comicList.get(position);
         Glide.with(mContext)
                 .load(comic.cover)
+                .placeholder(R.drawable.placeholder)
                 .into(holder.imageView);
         holder.titleView.setText(comic.name);
 

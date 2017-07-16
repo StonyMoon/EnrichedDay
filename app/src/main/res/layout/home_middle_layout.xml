@@ -28,7 +28,7 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/ib_xiandu"
+                        android:id="@+id/everyday_random_button"
                         android:layout_width="53dp"
                         android:layout_height="53dp"
                         android:background="@drawable/home_middle_fm" />
@@ -38,7 +38,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
-                        android:text="干货闲读"
+                        android:text="随机推荐"
                         android:textColor="@color/primaryText"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -62,7 +62,7 @@
                         android:clickable="true">
 
                         <ImageView
-                            android:id="@+id/daily_btn"
+                            android:id="@+id/everyday_comic_button"
                             android:layout_width="53dp"
                             android:layout_height="53dp"
                             android:background="@drawable/home_middle_day" />
@@ -83,7 +83,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="每日干货推荐"
+                        android:text="今日更新漫画"
                         android:textColor="@color/primaryText"
                         android:textSize="12sp" />
 
@@ -106,7 +106,7 @@
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/ib_movie_hot"
+                        android:id="@+id/everyday_pixiv_button"
                         android:layout_width="53dp"
                         android:layout_height="53dp"
                         android:layout_gravity="center"
@@ -127,5 +127,12 @@
 
     </LinearLayout>
 
+    <View
+
+        android:layout_width="match_parent"
+        android:layout_height="0.4dp"
+        android:layout_below="@+id/personal_recommend"
+        android:layout_marginTop="20dp"
+        android:background="#D4D4D4" />
 
 </RelativeLayout>

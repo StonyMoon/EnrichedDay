@@ -1,67 +1,97 @@
 package com.meo.stonymoon.enrichedday.ui.music;
 
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.meo.stonymoon.enrichedday.R;
+import com.meo.stonymoon.enrichedday.util.ShakeListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link MusicFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import static android.content.Context.SENSOR_SERVICE;
+
 public class MusicFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
+    private ShakeListener mShakeListener = null;
+    private ImageView loadImage;
+    private boolean flag = false;
     public MusicFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+    /*
+     * 拿到传感器
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MusicFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static MusicFragment newInstance(String param1, String param2) {
-        MusicFragment fragment = new MusicFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public void onStart() {
+        super.onStart();
+        mShakeListener = new ShakeListener(getContext());
+        mShakeListener.setOnShakeListener(new ShakeListener.OnShakeListener() {
+            public void onShake() {
+                //mShakeListener.stop();
+
+                if (flag) {
+                    flag = false;
+                    loadImage.setImageResource(R.drawable.load_down);
+
+                } else {
+                    flag = true;
+                    loadImage.setImageResource(R.drawable.load_up);
+
+                }
+
+
+            }
+        });
     }
+
+    /*
+     * 注销传感器
+     */
+    @Override
+    public void onPause() {
+        // 务必要在pause中注销 mSensorManager
+        // 否则会造成界面退出后摇一摇依旧生效的bug
+        if (mShakeListener != null) {
+            mShakeListener.stop();
+        }
+        super.onPause();
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_music, container, false);
+        View view = inflater.inflate(R.layout.fragment_music, container, false);
+        loadImage = (ImageView) view.findViewById(R.id.music_load);
+
+
+        return view;
+    }
+
+    public void startShakeListener() {
+        if (mShakeListener != null)
+            mShakeListener.start();
+
+    }
+
+    public void stopShakeListener() {
+        if (mShakeListener != null) {
+            mShakeListener.stop();
+        }
+
     }
 
 

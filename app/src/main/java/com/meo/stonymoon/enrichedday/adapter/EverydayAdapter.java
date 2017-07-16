@@ -17,7 +17,15 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.meo.stonymoon.enrichedday.R;
+import com.meo.stonymoon.enrichedday.bean.BangumiBean;
+import com.meo.stonymoon.enrichedday.bean.BookBean;
+import com.meo.stonymoon.enrichedday.bean.ComicBean;
+import com.meo.stonymoon.enrichedday.bean.PixivBean;
 import com.meo.stonymoon.enrichedday.model.EverydayModel;
+import com.meo.stonymoon.enrichedday.ui.PhotoActivity;
+import com.meo.stonymoon.enrichedday.ui.discovery.child.BangumiDetailActivity;
+import com.meo.stonymoon.enrichedday.ui.discovery.child.BookDetailActivity;
+import com.meo.stonymoon.enrichedday.ui.discovery.child.ComicDetailActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +48,19 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public SliderHolder(View view) {
             super(view);//TODO siler未完成
             sliderLayout = (SliderLayout) view.findViewById(R.id.everyday_slider);
-
+            List<String> urls = new ArrayList<>();
+            urls.add("http://moe321-10010265.file.myqcloud.com/pixiv_illust_day_rank/cd1096a40b72bf5f6d3f60224a512d95.jpg");
+            urls.add("http://moe321-10010265.file.myqcloud.com/pixiv_illust_day_rank/8c3a2071de7d897f554a57585464b92b.jpg");
+            for (String url : urls) {
+                TextSliderView customSliderView = new TextSliderView(mContext);
+                customSliderView
+                        .image(url)
+                        .setScaleType(BaseSliderView.ScaleType.Fit);
+                sliderLayout.addSlider(customSliderView);
+            }
+            sliderLayout.setPresetTransformer(SliderLayout.Transformer.ZoomOut);
+            sliderLayout.setCustomAnimation(new DescriptionAnimation());
+            sliderLayout.setDuration(2000);
         }
     }
 
@@ -89,17 +109,76 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (mContext == null) {
             mContext = parent.getContext();
         }
+
         switch (viewType) {
             case TYPE_SLIDER:
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_slider, parent, false);
-                SliderHolder holder = new SliderHolder(view);
-                return holder;
+                SliderHolder sliderHolder = new SliderHolder(view);
+                return sliderHolder;
             case TYPE_TITLE:
-                return new TitleHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_title, parent, false));
+                TitleHolder titleHolder = new TitleHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_title, parent, false));
+
+
+                return titleHolder;
             case TYPE_TWO:
-                return new TwoHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_two, parent, false));
+                final TwoHolder twoHolder = new TwoHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_two, parent, false));
+                twoHolder.imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position = twoHolder.getAdapterPosition();
+                        EverydayModel model = modelList.get(position);
+                        if (model.getDetailType().equals("comic")) {
+                            ComicBean.Comic c = model.getComic();
+                            //Xrecycler刷新部分占了一个位置
+                            Intent intent = new Intent(mContext, ComicDetailActivity.class);
+                            intent.putExtra("title", c.name);
+                            intent.putExtra("evaluate", c.description);
+                            intent.putExtra("coverUrl", c.cover);
+                            intent.putExtra("id", c.id);
+                            mContext.startActivity(intent);
+                        }
+                    }
+                });
+                return twoHolder;
             case TYPE_THREE:
-                return new ThreeHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_three, parent, false));
+                final ThreeHolder threeHolder = new ThreeHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_three, parent, false));
+                threeHolder.imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position = threeHolder.getAdapterPosition();
+                        EverydayModel model = modelList.get(position);
+                        if (model.getDetailType().equals("bangumi")) {
+                            BangumiBean.Bangumi b = model.getBangumi();
+                            Intent intent = new Intent(mContext, BangumiDetailActivity.class);
+                            String id = b.url.split("/")[4];
+                            intent.putExtra("bangumiId", id);
+                            mContext.startActivity(intent);
+                        } else if (model.getDetailType().equals("book")) {
+                            BookBean.Book b = model.getBook();
+                            //Xrecycler刷新部分占了一个位置
+                            Intent intent = new Intent(mContext, BookDetailActivity.class);
+                            intent.putExtra("imageUrl", b.images.imageUrl);
+                            intent.putExtra("title", b.title);
+                            intent.putExtra("average", b.rating.average);
+                            intent.putExtra("numRaters", b.rating.numRaters);
+                            intent.putExtra("pubdate", b.pubdate);
+                            intent.putExtra("authorIntro", b.authorIntro);
+                            intent.putExtra("summary", b.summary);
+                            mContext.startActivity(intent);
+
+                        } else if (model.getDetailType().equals("pixiv")) {
+                            PixivBean.PictureBean b = model.getPixiv();
+                            Intent intent = new Intent(mContext, PhotoActivity.class);
+                            intent.putExtra("imageUrl", "http://kyoko.b0.upaiyun.com/pixiv-ranking/" + b.picUrl);
+                            intent.putExtra("pixivUrl", b.pixivUrl);
+                            mContext.startActivity(intent);
+                        }
+
+                    }
+                });
+
+                return threeHolder;
+
             default:
                 return new ThreeHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bangumi, parent, false));
 
@@ -146,21 +225,6 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 titleHolder.titleView.setText(model.title);
                 break;
             case TYPE_SLIDER:
-                List<String> urls = new ArrayList<>();
-                urls.add("http://moe321-10010265.file.myqcloud.com/pixiv_illust_day_rank/cd1096a40b72bf5f6d3f60224a512d95.jpg");
-                urls.add("http://moe321-10010265.file.myqcloud.com/pixiv_illust_day_rank/8c3a2071de7d897f554a57585464b92b.jpg");
-                SliderLayout sliderLayout = ((SliderHolder) holder).sliderLayout;
-                for (String url : urls) {
-                    TextSliderView customSliderView = new TextSliderView(mContext);
-                    customSliderView
-                            .image(url)
-                            .setScaleType(BaseSliderView.ScaleType.Fit);
-                    sliderLayout.addSlider(customSliderView);
-                }
-                sliderLayout.setPresetTransformer(SliderLayout.Transformer.ZoomOut);
-                sliderLayout.setCustomAnimation(new DescriptionAnimation());
-                sliderLayout.setDuration(2000);
-                //sliderLayout.setCustomIndicator(indicator);
                 break;
 
         }
@@ -182,7 +246,11 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
+    /*
+        设置布局管理器根据不同的类型行数来确定行数
 
+
+     */
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
@@ -211,4 +279,83 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
     }
+
+
+    class BookListener implements View.OnClickListener { //TODO
+        ThreeHolder threeHolder;
+
+        BookListener(ThreeHolder threeHolder) {
+            this.threeHolder = threeHolder;
+        }
+
+        @Override
+        public void onClick(View v) {
+            int postion = threeHolder.getAdapterPosition();
+            HashMap<String, String> detailMap = modelList.get(postion).detailMap;
+            Intent intent = new Intent(mContext, BangumiDetailActivity.class);
+            intent.putExtra("bangumiId", detailMap.get("bangumiId"));
+            mContext.startActivity(intent);
+        }
+    }
+
+
+    class PixivListener implements View.OnClickListener { //todo
+        ThreeHolder threeHolder;
+
+        PixivListener(ThreeHolder threeHolder) {
+            this.threeHolder = threeHolder;
+        }
+
+        @Override
+        public void onClick(View v) {
+            int postion = threeHolder.getAdapterPosition();
+            HashMap<String, String> detailMap = modelList.get(postion).detailMap;
+            Intent intent = new Intent(mContext, BangumiDetailActivity.class);
+            intent.putExtra("bangumiId", detailMap.get("bangumiId"));
+            mContext.startActivity(intent);
+        }
+    }
+
+
+    class ComicListener implements View.OnClickListener {
+        RecyclerView.ViewHolder holder;
+
+        ComicListener(RecyclerView.ViewHolder holder) {
+            this.holder = holder;
+        }
+
+        @Override
+        public void onClick(View v) {
+            int postion = holder.getAdapterPosition();
+            HashMap<String, String> detailMap = modelList.get(postion).detailMap;
+            Intent intent = new Intent(mContext, ComicDetailActivity.class);
+            intent.putExtra("title", detailMap.get("title"));
+            intent.putExtra("evaluate", detailMap.get("evaluate"));
+            intent.putExtra("coverUrl", detailMap.get("coverUrl"));
+            intent.putExtra("id", detailMap.get("id"));
+            mContext.startActivity(intent);
+
+        }
+    }
+
+    class TitleListener implements View.OnClickListener { //TODO
+        ThreeHolder threeHolder;
+
+        TitleListener(ThreeHolder threeHolder) {
+            this.threeHolder = threeHolder;
+        }
+
+        @Override
+        public void onClick(View v) {
+            int postion = threeHolder.getAdapterPosition();
+            HashMap<String, String> detailMap = modelList.get(postion).detailMap;
+            Intent intent = new Intent(mContext, BangumiDetailActivity.class);
+            intent.putExtra("bangumiId", detailMap.get("bangumiId"));
+            mContext.startActivity(intent);
+        }
+    }
+
+
+
 }
+

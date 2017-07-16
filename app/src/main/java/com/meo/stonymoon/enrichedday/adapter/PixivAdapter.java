@@ -53,6 +53,7 @@ public class PixivAdapter extends RecyclerView.Adapter<PixivAdapter.ViewHolder> 
                 //Xrecycler刷新部分占了一个位置
                 Intent intent = new Intent(mContext, PhotoActivity.class);
                 intent.putExtra("imageUrl", "http://kyoko.b0.upaiyun.com/pixiv-ranking/" + b.picUrl);
+                intent.putExtra("pixivUrl", b.pixivUrl);
                 mContext.startActivity(intent);
 
             }
@@ -77,6 +78,7 @@ public class PixivAdapter extends RecyclerView.Adapter<PixivAdapter.ViewHolder> 
 
         Glide.with(mContext)
                 .load("http://kyoko.b0.upaiyun.com/pixiv-ranking/" + pictureBean.picUrl)
+                .placeholder(R.drawable.placeholder)
                 .into(holder.imageView);
 
     }

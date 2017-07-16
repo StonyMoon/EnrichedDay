@@ -75,8 +75,13 @@ public class DiscoveryFragment extends Fragment {
         //mBinding.include.ivTitleGank.setSelected(true);
         viewPager.setCurrentItem(0);
 
+    }
+
+    public void selectPage(int i) {
+        viewPager.setCurrentItem(i);
 
     }
+
 
 
 }

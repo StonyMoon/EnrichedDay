@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity
     private ImageView musicImage;
     private ImageView discoveryImage;
     private ImageView friendImage;
+    private MusicFragment musicFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,8 +155,12 @@ public class MainActivity extends AppCompatActivity
 
     private void initFragment() {
         ArrayList<Fragment> mFragmentList = new ArrayList<>();
-        mFragmentList.add(new MusicFragment());
-        mFragmentList.add(new DiscoveryFragment());
+        musicFragment = new MusicFragment();
+        musicFragment.stopShakeListener();
+        //关闭shake listener
+        DiscoveryFragment discoveryFragment = new DiscoveryFragment();
+        mFragmentList.add(musicFragment);
+        mFragmentList.add(discoveryFragment);
         mFragmentList.add(new FriendFragment());
         // 注意使用的是：getSupportFragmentManager
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList);
@@ -163,9 +168,7 @@ public class MainActivity extends AppCompatActivity
         // 设置ViewPager最大缓存的页面个数(cpu消耗少)
         viewPager.setOffscreenPageLimit(2);
         viewPager.addOnPageChangeListener(this);
-        //mBinding.include.ivTitleGank.setSelected(true);
         viewPager.setCurrentItem(1);
-
 
     }
 
@@ -183,6 +186,7 @@ public class MainActivity extends AppCompatActivity
     public void onPageSelected(int position) {
         switch (position) {
             case 0:
+                musicFragment.startShakeListener();
                 discoveryImage.setSelected(false);
                 friendImage.setSelected(false);
                 musicImage.setSelected(true);
@@ -191,11 +195,13 @@ public class MainActivity extends AppCompatActivity
                 discoveryImage.setSelected(true);
                 friendImage.setSelected(false);
                 musicImage.setSelected(false);
+                musicFragment.stopShakeListener();
                 break;
             case 2:
                 discoveryImage.setSelected(false);
                 friendImage.setSelected(true);
                 musicImage.setSelected(false);
+                musicFragment.stopShakeListener();
                 break;
 
         }
