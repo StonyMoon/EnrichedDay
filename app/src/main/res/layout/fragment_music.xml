@@ -3,15 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/music_fragment"
-
-
     >
+
+    <LinearLayout
+        android:id="@+id/music_random_layout"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/recommend_cover_image"
+            android:layout_width="180dp"
+            android:layout_height="250dp"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:layout_margin="5dp"
+            android:id="@+id/recommend_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/primaryText" />
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/music_load"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/load_up" />
+        android:background="@drawable/loading_anim" />
 
 
 </FrameLayout>

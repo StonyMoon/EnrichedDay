@@ -118,7 +118,6 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case TYPE_TITLE:
                 TitleHolder titleHolder = new TitleHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_title, parent, false));
 
-
                 return titleHolder;
             case TYPE_TWO:
                 final TwoHolder twoHolder = new TwoHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_two, parent, false));

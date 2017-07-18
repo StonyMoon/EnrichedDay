@@ -16,6 +16,8 @@ public class ComicDetailBean {
     }
 
     public class ReturnComicDetailData {
+        public String cover;
+        public String name;
         @SerializedName("chapter_list")
         public List<ComicChapter> comicChapterList = new ArrayList<>();
 
@@ -23,6 +25,7 @@ public class ComicDetailBean {
 
     public class ComicChapter {
         public String name;
+
         @SerializedName("chapter_id")
         public String chapterId;
 
