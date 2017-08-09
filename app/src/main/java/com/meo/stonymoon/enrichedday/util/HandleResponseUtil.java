@@ -8,6 +8,7 @@ import com.meo.stonymoon.enrichedday.bean.ComicBean;
 import com.meo.stonymoon.enrichedday.bean.ComicDetailBean;
 import com.meo.stonymoon.enrichedday.bean.PixivBean;
 import com.google.gson.Gson;
+import com.meo.stonymoon.enrichedday.bean.SliderBean;
 
 
 public class HandleResponseUtil {
@@ -113,6 +114,20 @@ public class HandleResponseUtil {
         return bean;
 
     }
+
+    public static SliderBean handleSliderResponse(String response) {
+        Gson gson = new Gson();
+        SliderBean bean = null;
+        response = response.substring(response.indexOf('{'), response.length() - 1);
+        try {
+            bean = gson.fromJson(response, SliderBean.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bean;
+    }
+
 
 
 }

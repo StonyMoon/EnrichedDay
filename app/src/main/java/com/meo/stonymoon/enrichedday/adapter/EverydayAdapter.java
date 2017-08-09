@@ -1,5 +1,6 @@
 package com.meo.stonymoon.enrichedday.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
@@ -7,29 +8,40 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.ModelCache;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.meo.stonymoon.enrichedday.MainActivity;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.bean.BangumiBean;
 import com.meo.stonymoon.enrichedday.bean.BookBean;
 import com.meo.stonymoon.enrichedday.bean.ComicBean;
 import com.meo.stonymoon.enrichedday.bean.PixivBean;
+import com.meo.stonymoon.enrichedday.bean.SliderBean;
 import com.meo.stonymoon.enrichedday.model.EverydayModel;
 import com.meo.stonymoon.enrichedday.ui.PhotoActivity;
+import com.meo.stonymoon.enrichedday.ui.discovery.DiscoveryFragment;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.BangumiDetailActivity;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.BookDetailActivity;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.ComicDetailActivity;
+import com.meo.stonymoon.enrichedday.util.HandleResponseUtil;
+import com.meo.stonymoon.enrichedday.util.HttpUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 import static com.meo.stonymoon.enrichedday.model.EverydayModel.TYPE_SLIDER;
 import static com.meo.stonymoon.enrichedday.model.EverydayModel.TYPE_THREE;
@@ -43,32 +55,52 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context mContext;
 
     private class SliderHolder extends RecyclerView.ViewHolder {
-        public SliderLayout sliderLayout;
+        private SliderLayout sliderLayout;
+        private ImageButton pixiv;
+        private ImageButton random;
 
-        public SliderHolder(View view) {
-            super(view);//TODO siler未完成
+
+        private SliderHolder(View view) {
+            super(view);
             sliderLayout = (SliderLayout) view.findViewById(R.id.everyday_slider);
-            List<String> urls = new ArrayList<>();
-            urls.add("http://moe321-10010265.file.myqcloud.com/pixiv_illust_day_rank/cd1096a40b72bf5f6d3f60224a512d95.jpg");
-            urls.add("http://moe321-10010265.file.myqcloud.com/pixiv_illust_day_rank/8c3a2071de7d897f554a57585464b92b.jpg");
-            for (String url : urls) {
-                TextSliderView customSliderView = new TextSliderView(mContext);
-                customSliderView
-                        .image(url)
-                        .setScaleType(BaseSliderView.ScaleType.Fit);
-                sliderLayout.addSlider(customSliderView);
-            }
-            sliderLayout.setPresetTransformer(SliderLayout.Transformer.ZoomOut);
-            sliderLayout.setCustomAnimation(new DescriptionAnimation());
-            sliderLayout.setDuration(2000);
+            pixiv = (ImageButton) view.findViewById(R.id.everyday_pixiv_button);
+            random = (ImageButton) view.findViewById(R.id.everyday_random_button);
+            HttpUtil.sendOkHttpRequest("http://api.bilibili.com/x/web-show/res/loc?callback=jQuery17205969745067413896_1482805801285&jsonp=jsonp&pf=0&id=23&_=1482805801599", new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    final SliderBean sliderBean = HandleResponseUtil.handleSliderResponse(response.body().string());
+                    ((Activity) mContext).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (SliderBean.Data data : sliderBean.data) {
+                                TextSliderView customSliderView = new TextSliderView(mContext);
+                                customSliderView
+                                        .image(data.pic)
+                                        .setScaleType(BaseSliderView.ScaleType.Fit);
+                                sliderLayout.addSlider(customSliderView);
+                            }
+                            sliderLayout.setCustomAnimation(new DescriptionAnimation());
+                            sliderLayout.setDuration(2000);
+                        }
+                    });
+                }
+            });
+
+
+
         }
     }
 
     private class TwoHolder extends RecyclerView.ViewHolder {
-        public ImageView imageView;
-        public TextView titleView;
+        private ImageView imageView;
+        private TextView titleView;
 
-        public TwoHolder(View view) {
+        private TwoHolder(View view) {
             super(view);
             imageView = (ImageView) view.findViewById(R.id.everyday_two_image);
             titleView = (TextView) view.findViewById(R.id.everyday_two_title);
@@ -76,10 +108,10 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private class ThreeHolder extends RecyclerView.ViewHolder {
-        public ImageView imageView;
-        public TextView titleView;
+        private ImageView imageView;
+        private TextView titleView;
 
-        public ThreeHolder(View view) {
+        private ThreeHolder(View view) {
             super(view);
             imageView = (ImageView) view.findViewById(R.id.everyday_three_image);
             titleView = (TextView) view.findViewById(R.id.everyday_three_title);
@@ -88,12 +120,13 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private class TitleHolder extends RecyclerView.ViewHolder {
-        public TextView titleView;
+        private TextView titleView;
+        private LinearLayout titleLayout;
 
-        public TitleHolder(View view) {
+        private TitleHolder(View view) {
             super(view);
             titleView = (TextView) view.findViewById(R.id.everyday_title_text);
-
+            titleLayout = (LinearLayout) view.findViewById(R.id.everyday_title);
         }
 
     }
@@ -114,9 +147,37 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case TYPE_SLIDER:
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_slider, parent, false);
                 SliderHolder sliderHolder = new SliderHolder(view);
+                sliderHolder.pixiv.setOnClickListener(new SliderListener());
+                sliderHolder.random.setOnClickListener(new SliderListener());
+
                 return sliderHolder;
             case TYPE_TITLE:
-                TitleHolder titleHolder = new TitleHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_title, parent, false));
+                final TitleHolder titleHolder = new TitleHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_title, parent, false));
+                titleHolder.titleLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String title = modelList.get(titleHolder.getAdapterPosition()).title;
+                        //只能调用mainActivity里的方法来实现翻页了= =
+                        MainActivity mainActivity = ((MainActivity) mContext);
+                        switch (title) {
+                            case "推荐番剧":
+                                mainActivity.selectDiscoveryFragmentPage(1);
+                                break;
+                            case "推荐漫画":
+                                mainActivity.selectDiscoveryFragmentPage(2);
+                                break;
+                            case "推荐小说":
+                                mainActivity.selectDiscoveryFragmentPage(3);
+                                break;
+                            case "P站日榜":
+                                ((MainActivity) mContext).selectPage(2);
+                                break;
+                        }
+
+                    }
+                });
+
+
 
                 return titleHolder;
             case TYPE_TWO:
@@ -280,80 +341,51 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-    class BookListener implements View.OnClickListener { //TODO
-        ThreeHolder threeHolder;
+    class SliderListener implements View.OnClickListener {
 
-        BookListener(ThreeHolder threeHolder) {
-            this.threeHolder = threeHolder;
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.everyday_random_button:
+                    ((MainActivity) mContext).selectPage(0);
+                    break;
+                case R.id.everyday_pixiv_button:
+                    ((MainActivity) mContext).selectPage(2);
+                    break;
+            }
+        }
+    }
+
+    class TitleListener implements View.OnClickListener {
+        String title;
+
+        TitleListener(String title) {
+            this.title = title;
         }
 
         @Override
         public void onClick(View v) {
-            int postion = threeHolder.getAdapterPosition();
-            HashMap<String, String> detailMap = modelList.get(postion).detailMap;
-            Intent intent = new Intent(mContext, BangumiDetailActivity.class);
-            intent.putExtra("bangumiId", detailMap.get("bangumiId"));
-            mContext.startActivity(intent);
+            //拿到DiscoveryFragment实现翻页
+            DiscoveryFragment discoveryFragment = (DiscoveryFragment) ((MainActivity) mContext).getSupportFragmentManager().findFragmentById(R.id.discovery_fragment);
+            switch (title) {
+                case "推荐番剧":
+                    discoveryFragment.selectPage(1);
+                    break;
+                case "推荐漫画":
+                    discoveryFragment.selectPage(2);
+                    break;
+                case "推荐小说":
+                    discoveryFragment.selectPage(3);
+                    break;
+                case "P站日榜":
+                    ((MainActivity) mContext).selectPage(2);
+                    break;
+            }
         }
+
+
+
     }
-
-
-    class PixivListener implements View.OnClickListener { //todo
-        ThreeHolder threeHolder;
-
-        PixivListener(ThreeHolder threeHolder) {
-            this.threeHolder = threeHolder;
-        }
-
-        @Override
-        public void onClick(View v) {
-            int postion = threeHolder.getAdapterPosition();
-            HashMap<String, String> detailMap = modelList.get(postion).detailMap;
-            Intent intent = new Intent(mContext, BangumiDetailActivity.class);
-            intent.putExtra("bangumiId", detailMap.get("bangumiId"));
-            mContext.startActivity(intent);
-        }
-    }
-
-
-    class ComicListener implements View.OnClickListener {
-        RecyclerView.ViewHolder holder;
-
-        ComicListener(RecyclerView.ViewHolder holder) {
-            this.holder = holder;
-        }
-
-        @Override
-        public void onClick(View v) {
-            int postion = holder.getAdapterPosition();
-            HashMap<String, String> detailMap = modelList.get(postion).detailMap;
-            Intent intent = new Intent(mContext, ComicDetailActivity.class);
-            intent.putExtra("title", detailMap.get("title"));
-            intent.putExtra("evaluate", detailMap.get("evaluate"));
-            intent.putExtra("coverUrl", detailMap.get("coverUrl"));
-            intent.putExtra("id", detailMap.get("id"));
-            mContext.startActivity(intent);
-
-        }
-    }
-
-    class TitleListener implements View.OnClickListener { //TODO
-        ThreeHolder threeHolder;
-
-        TitleListener(ThreeHolder threeHolder) {
-            this.threeHolder = threeHolder;
-        }
-
-        @Override
-        public void onClick(View v) {
-            int postion = threeHolder.getAdapterPosition();
-            HashMap<String, String> detailMap = modelList.get(postion).detailMap;
-            Intent intent = new Intent(mContext, BangumiDetailActivity.class);
-            intent.putExtra("bangumiId", detailMap.get("bangumiId"));
-            mContext.startActivity(intent);
-        }
-    }
-
 
 
 }

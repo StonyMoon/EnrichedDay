@@ -1,7 +1,11 @@
 package com.meo.stonymoon.enrichedday.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +14,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.FutureTarget;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.bean.BangumiBean;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.BangumiDetailActivity;
 
+import java.io.File;
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class BangumiAdapter extends RecyclerView.Adapter<BangumiAdapter.ViewHolder> {
 
@@ -29,6 +38,8 @@ public class BangumiAdapter extends RecyclerView.Adapter<BangumiAdapter.ViewHold
             super(view);
             imageView = (ImageView) view.findViewById(R.id.bangumi_image);
             titleView = (TextView) view.findViewById(R.id.bangumi_title);
+
+
         }
 
     }
@@ -43,7 +54,7 @@ public class BangumiAdapter extends RecyclerView.Adapter<BangumiAdapter.ViewHold
             mContext = parent.getContext();
 
         }
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bangumi, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bangumi, parent, false);
         final ViewHolder holder = new ViewHolder(view);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +65,11 @@ public class BangumiAdapter extends RecyclerView.Adapter<BangumiAdapter.ViewHold
                 Intent intent = new Intent(mContext, BangumiDetailActivity.class);
                 String id = b.url.split("/")[4];
                 intent.putExtra("bangumiId", id);
-                mContext.startActivity(intent);
+                intent.putExtra("coverUrl", b.cover);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext,
+                        new Pair<View, String>(view.findViewById(R.id.bangumi_image), "bangumi_share")
+                );
+                ActivityCompat.startActivity(mContext, intent, options.toBundle());
             }
 
         });
@@ -77,5 +92,6 @@ public class BangumiAdapter extends RecyclerView.Adapter<BangumiAdapter.ViewHold
                 .into(holder.imageView);
         holder.titleView.setText(bangumi.title);
     }
+
 
 }

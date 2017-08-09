@@ -14,7 +14,6 @@ import com.meo.stonymoon.enrichedday.ui.discovery.child.BangumiFragment;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.BookFragment;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.ComicFragment;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.RecommendFragment;
-import com.meo.stonymoon.enrichedday.ui.discovery.child.TestFragment;
 
 import java.util.ArrayList;
 import java.util.List;

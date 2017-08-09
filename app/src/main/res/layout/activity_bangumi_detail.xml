@@ -3,7 +3,8 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:id="@+id/bangumi_detail_layout">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/bangumi_detail_appbar"
@@ -18,27 +19,30 @@
             android:id="@+id/bangumi_detail_toolbar"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="#32000000"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+
 
             >
 
             <RelativeLayout
+                android:id="@+id/bangumi_detail_bar_bg"
                 android:fitsSystemWindows="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <ImageView
-
+                    android:fitsSystemWindows="true"
                     android:id="@+id/bangumi_detail_bg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
 
                 <ImageView
+                    android:transitionName="bangumi_share"
                     android:layout_marginTop="70dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
@@ -64,7 +68,10 @@
                 android:id="@+id/bangumi_detail_tb"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/AlertDialog.AppCompat.Light">
+                app:popupTheme="@style/AlertDialog.AppCompat.Light"
+
+                >
+
                 <!--app:layout_scrollFlags="scroll|enterAlways|snap"影响宣传所以不加进去-->
             </android.support.v7.widget.Toolbar>
 
@@ -74,53 +81,12 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <android.support.v4.widget.NestedScrollView
-
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingTop="10dp">
+        android:id="@+id/episode_list" />
 
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="18dp"
-                    android:background="@color/colorPrimary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:text="简介"
-                    android:textColor="@color/primaryText"
-                    android:textSize="17sp" />
-
-            </LinearLayout>
-
-            <!--又名-->
-            <TextView
-                android:id="@+id/bangumi_detail_evaluate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:textColor="@color/secondText" />
-
-
-        </LinearLayout>
-
-
-    </android.support.v4.widget.NestedScrollView>
 
 
     <android.support.design.widget.FloatingActionButton

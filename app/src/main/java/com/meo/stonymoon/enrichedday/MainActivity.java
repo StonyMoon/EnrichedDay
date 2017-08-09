@@ -1,3 +1,9 @@
+/*
+ * MainActivity持有全部的翻页方法，在任何地方想要翻页只需要拿到Context后
+ * 调用相应的方法即可
+ */
+
+
 package com.meo.stonymoon.enrichedday;
 
 import com.meo.stonymoon.enrichedday.ui.discovery.*;
@@ -20,6 +26,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
         ViewPager.OnPageChangeListener {
@@ -29,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     private ImageView discoveryImage;
     private ImageView friendImage;
     private MusicFragment musicFragment;
+    private DiscoveryFragment discoveryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,8 +165,8 @@ public class MainActivity extends AppCompatActivity
         ArrayList<Fragment> mFragmentList = new ArrayList<>();
         musicFragment = new MusicFragment();
         musicFragment.stopShakeListener();
+        discoveryFragment = new DiscoveryFragment();
         //关闭shake listener
-        DiscoveryFragment discoveryFragment = new DiscoveryFragment();
         mFragmentList.add(musicFragment);
         mFragmentList.add(discoveryFragment);
         mFragmentList.add(new FriendFragment());
@@ -208,4 +216,13 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
+    public void selectPage(int page) {
+        viewPager.setCurrentItem(page);
+    }
+
+    public void selectDiscoveryFragmentPage(int page) {
+        discoveryFragment.selectPage(page);
+    }
+
 }

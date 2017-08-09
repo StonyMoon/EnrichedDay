@@ -6,6 +6,7 @@
 
 
     <ImageView
+        android:transitionName="bangumi_share"
         android:id="@+id/bangumi_image"
         android:layout_width="match_parent"
         android:layout_height="180dp"
