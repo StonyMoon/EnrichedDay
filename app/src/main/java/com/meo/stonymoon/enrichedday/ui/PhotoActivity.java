@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.bumptech.glide.Glide;
 import com.meo.stonymoon.enrichedday.R;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.squareup.picasso.Picasso;
 
 public class PhotoActivity extends AppCompatActivity {
     private String url;
@@ -36,7 +36,7 @@ public class PhotoActivity extends AppCompatActivity {
             }
         });
 
-        Glide.with(this)
+        Picasso.with(this)
                 .load(url)
                 .into(photoView);
 

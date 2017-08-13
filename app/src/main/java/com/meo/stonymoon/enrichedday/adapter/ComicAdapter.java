@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.bean.ComicBean;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.ComicDetailActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class ComicAdapter extends RecyclerView.Adapter<ComicAdapter.ViewHolder> 
 
     public void onBindViewHolder(ComicAdapter.ViewHolder holder, int position) {
         ComicBean.Comic comic = comicList.get(position);
-        Glide.with(mContext)
+        Picasso.with(mContext)
                 .load(comic.cover)
                 .placeholder(R.drawable.placeholder)
                 .into(holder.imageView);

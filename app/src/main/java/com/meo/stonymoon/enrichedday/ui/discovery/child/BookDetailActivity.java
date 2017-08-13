@@ -13,11 +13,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meo.stonymoon.enrichedday.R;
+import com.squareup.picasso.Picasso;
 
-
-import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 
 public class BookDetailActivity extends AppCompatActivity {
@@ -87,12 +86,12 @@ public class BookDetailActivity extends AppCompatActivity {
         pubdateText.setText("出版时间：" + intent.getStringExtra("pubdate"));
         authorIntroText.setText(intent.getStringExtra("authorIntro"));
         evaluateText.setText(intent.getStringExtra("summary"));
-        Glide.with(BookDetailActivity.this)
+        Picasso.with(BookDetailActivity.this)
                 .load(url)
                 .into(coverImage);
-        Glide.with(BookDetailActivity.this)
+        Picasso.with(BookDetailActivity.this)
                 .load(url)
-                .bitmapTransform(new BlurTransformation(BookDetailActivity.this, 14, 5))
+                .transform(new BlurTransformation(BookDetailActivity.this, 14, 5))
                 .into(bgImage);
 
     }

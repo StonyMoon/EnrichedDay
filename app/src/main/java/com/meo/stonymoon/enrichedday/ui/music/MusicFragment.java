@@ -18,19 +18,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.bean.BangumiDetailBean;
 import com.meo.stonymoon.enrichedday.bean.ComicDetailBean;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.BangumiDetailActivity;
-import com.meo.stonymoon.enrichedday.ui.discovery.child.ComicDetailActivity;
 import com.meo.stonymoon.enrichedday.util.HandleResponseUtil;
 import com.meo.stonymoon.enrichedday.util.HttpUtil;
 import com.meo.stonymoon.enrichedday.util.ShakeListener;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
-import jp.wasabeef.glide.transformations.BlurTransformation;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -225,7 +223,7 @@ public class MusicFragment extends Fragment {
                 loadImage.setVisibility(View.GONE);
                 randomLayout.setVisibility(View.VISIBLE);
                 titleText.setText(title);
-                Glide.with(getContext()).load(url).into(coverImage);
+                Picasso.with(getContext()).load(url).into(coverImage);
                 //重新监听摇动
                 startShakeListener();
             }

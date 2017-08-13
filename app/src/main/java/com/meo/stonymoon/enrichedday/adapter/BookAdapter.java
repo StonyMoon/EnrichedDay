@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.bean.BookBean;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.BookDetailActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -77,7 +78,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
     public void onBindViewHolder(ViewHolder holder, int position) {
         BookBean.Book book = bookList.get(position);
-        Glide.with(mContext)
+        Picasso.with(mContext)
                 .load(book.images.imageUrl)
                 .placeholder(R.drawable.placeholder)
                 .into(holder.imageView);

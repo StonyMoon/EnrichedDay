@@ -19,6 +19,7 @@ import com.bumptech.glide.request.FutureTarget;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.bean.BangumiBean;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.BangumiDetailActivity;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
@@ -86,7 +87,7 @@ public class BangumiAdapter extends RecyclerView.Adapter<BangumiAdapter.ViewHold
 
     public void onBindViewHolder(ViewHolder holder, int position) {
         BangumiBean.Bangumi bangumi = bangumiList.get(position);
-        Glide.with(mContext)
+        Picasso.with(mContext)
                 .load(bangumi.cover)
                 .placeholder(R.drawable.placeholder)
                 .into(holder.imageView);

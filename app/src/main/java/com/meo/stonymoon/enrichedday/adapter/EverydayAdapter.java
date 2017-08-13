@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -33,6 +32,7 @@ import com.meo.stonymoon.enrichedday.ui.discovery.child.BookDetailActivity;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.ComicDetailActivity;
 import com.meo.stonymoon.enrichedday.util.HandleResponseUtil;
 import com.meo.stonymoon.enrichedday.util.HttpUtil;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -268,14 +268,14 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (model.type) {
             case TYPE_THREE:
                 ThreeHolder threeHolder = (ThreeHolder) holder;
-                Glide.with(mContext)
+                Picasso.with(mContext)
                         .load(model.url)
                         .into(threeHolder.imageView);
                 threeHolder.titleView.setText(model.title);
                 break;
             case TYPE_TWO:
                 TwoHolder twoHolder = (TwoHolder) holder;
-                Glide.with(mContext)
+                Picasso.with(mContext)
                         .load(model.url)
                         .into(twoHolder.imageView);
                 twoHolder.titleView.setText(model.title);

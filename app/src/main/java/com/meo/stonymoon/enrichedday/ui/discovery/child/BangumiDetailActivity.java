@@ -1,21 +1,13 @@
 package com.meo.stonymoon.enrichedday.ui.discovery.child;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Path;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.ContactsContract;
+
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -26,27 +18,25 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.FutureTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.util.ExceptionCatchingInputStream;
 import com.jaeger.library.StatusBarUtil;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.adapter.EpisodeAdapter;
-import com.meo.stonymoon.enrichedday.bean.BangumiBean;
 import com.meo.stonymoon.enrichedday.bean.BangumiDetailBean;
 import com.meo.stonymoon.enrichedday.ui.VideoActivity;
 import com.meo.stonymoon.enrichedday.util.HandleResponseUtil;
 import com.meo.stonymoon.enrichedday.util.HttpUtil;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+import com.squareup.picasso.Transformation;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
-import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.picasso.transformations.BlurTransformation;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -138,12 +128,13 @@ public class BangumiDetailActivity extends AppCompatActivity implements View.OnC
                     public void run() {
                         stuffText.setText(bean.result.staff);
 
-                        Glide.with(BangumiDetailActivity.this)
+                        Picasso.with(BangumiDetailActivity.this)
                                 .load(bean.result.cover)
                                 .into(coverImage);
-                        Glide.with(BangumiDetailActivity.this)
+
+                        Picasso.with(BangumiDetailActivity.this)
                                 .load(bean.result.cover)
-                                .bitmapTransform(new BlurTransformation(BangumiDetailActivity.this, 14, 5))
+                                .transform(new BlurTransformation(BangumiDetailActivity.this, 14, 5))
                                 .into(bgImage);
                         evaluateText.setText(bean.result.evaluate);
                         toolbar.setTitle(bean.result.title);

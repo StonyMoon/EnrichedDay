@@ -16,18 +16,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.adapter.ChapterAdapter;
 import com.meo.stonymoon.enrichedday.bean.ComicDetailBean;
 import com.meo.stonymoon.enrichedday.util.HandleResponseUtil;
 import com.meo.stonymoon.enrichedday.util.HttpUtil;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.picasso.transformations.BlurTransformation;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -111,12 +111,12 @@ public class ComicDetailActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void run() {
 
-                        Glide.with(ComicDetailActivity.this)
+                        Picasso.with(ComicDetailActivity.this)
                                 .load(coverUrl)
                                 .into(coverImage);
-                        Glide.with(ComicDetailActivity.this)
+                        Picasso.with(ComicDetailActivity.this)
                                 .load(coverUrl)
-                                .bitmapTransform(new BlurTransformation(ComicDetailActivity.this, 14, 5))
+                                .transform(new BlurTransformation(ComicDetailActivity.this, 14, 5))
                                 .into(bgImage);
                         evaluateText.setText(evaluate);
                         toolbar.setTitle(title);

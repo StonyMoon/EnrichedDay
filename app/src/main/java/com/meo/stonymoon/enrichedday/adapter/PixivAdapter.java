@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.bean.PixivBean;
 import com.meo.stonymoon.enrichedday.ui.PhotoActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -76,7 +76,7 @@ public class PixivAdapter extends RecyclerView.Adapter<PixivAdapter.ViewHolder> 
 //        float scale = (itemWidth)/
 
 
-        Glide.with(mContext)
+        Picasso.with(mContext)
                 .load("http://kyoko.b0.upaiyun.com/pixiv-ranking/" + pictureBean.picUrl)
                 .placeholder(R.drawable.placeholder)
                 .into(holder.imageView);
