@@ -13,11 +13,13 @@
         app:auto_cycle="true"
         app:indicator_visibility="visible"></com.daimajia.slider.library.SliderLayout>
 
+
     <com.daimajia.slider.library.Indicators.PagerIndicator
         android:id="@+id/everyday_slider_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center" />
+
 
     <include layout="@layout/home_middle_layout" />
 

@@ -30,6 +30,7 @@ import com.meo.stonymoon.enrichedday.ui.discovery.DiscoveryFragment;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.BangumiDetailActivity;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.BookDetailActivity;
 import com.meo.stonymoon.enrichedday.ui.discovery.child.ComicDetailActivity;
+import com.meo.stonymoon.enrichedday.util.DateUtil;
 import com.meo.stonymoon.enrichedday.util.HandleResponseUtil;
 import com.meo.stonymoon.enrichedday.util.HttpUtil;
 import com.squareup.picasso.Picasso;
@@ -58,6 +59,7 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private SliderLayout sliderLayout;
         private ImageButton pixiv;
         private ImageButton random;
+        private TextView dayText;
 
 
         private SliderHolder(View view) {
@@ -65,6 +67,9 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             sliderLayout = (SliderLayout) view.findViewById(R.id.everyday_slider);
             pixiv = (ImageButton) view.findViewById(R.id.everyday_pixiv_button);
             random = (ImageButton) view.findViewById(R.id.everyday_random_button);
+            dayText = (TextView) view.findViewById(R.id.daily_text);
+
+
             HttpUtil.sendOkHttpRequest("http://api.bilibili.com/x/web-show/res/loc?callback=jQuery17205969745067413896_1482805801285&jsonp=jsonp&pf=0&id=23&_=1482805801599", new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -90,7 +95,6 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     });
                 }
             });
-
 
 
         }
@@ -177,8 +181,6 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }
                 });
 
-
-
                 return titleHolder;
             case TYPE_TWO:
                 final TwoHolder twoHolder = new TwoHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_two, parent, false));
@@ -246,18 +248,6 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
 
-//        holder.imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int position = holder.getAdapterPosition();
-//                PixivBean.PictureBean b = pixivBeanList.get(position-1);
-//                //Xrecycler刷新部分占了一个位置
-//                Intent intent = new Intent(mContext, PhotoActivity.class);
-//                intent.putExtra("imageUrl","http://kyoko.b0.upaiyun.com/pixiv-ranking/"+b.picUrl);
-//                mContext.startActivity(intent);
-//
-//            }
-//        });
 
 
     }
@@ -285,6 +275,8 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 titleHolder.titleView.setText(model.title);
                 break;
             case TYPE_SLIDER:
+                SliderHolder sliderHolder = (SliderHolder) holder;
+                sliderHolder.dayText.setText(DateUtil.getDay());
                 break;
 
         }

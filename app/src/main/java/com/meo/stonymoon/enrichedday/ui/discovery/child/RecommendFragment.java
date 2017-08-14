@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.meo.stonymoon.enrichedday.MainActivity;
@@ -38,17 +39,16 @@ import static com.meo.stonymoon.enrichedday.model.EverydayModel.TYPE_SLIDER;
 import static com.meo.stonymoon.enrichedday.model.EverydayModel.TYPE_THREE;
 import static com.meo.stonymoon.enrichedday.model.EverydayModel.TYPE_TITLE;
 import static com.meo.stonymoon.enrichedday.model.EverydayModel.TYPE_TWO;
-
+import static com.meo.stonymoon.enrichedday.util.DateUtil.getDay;
 
 
 public class RecommendFragment extends Fragment {
-    /*
-     * 让这个碎片持有一个引用
-     */
+
 
     RecyclerView recyclerView;
     List<EverydayModel> modelList = new ArrayList<>();
     EverydayAdapter adapter = new EverydayAdapter(modelList);
+
     public RecommendFragment() {
 
     }
@@ -62,6 +62,7 @@ public class RecommendFragment extends Fragment {
         recyclerView.setLayoutManager(manager);
         recyclerView.addItemDecoration(new MyItemDecoration(2, 5));
         recyclerView.setAdapter(adapter);
+
         initData();
 
         return view;

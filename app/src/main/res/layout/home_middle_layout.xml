@@ -68,18 +68,17 @@
                             android:background="@drawable/home_middle_day" />
 
                         <TextView
-                            android:id="@+id/tv_daily_text"
+                            android:id="@+id/daily_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="xx"
-                            android:textColor="@color/primaryText"
+                            android:textColor="@drawable/day_text_bg"
                             android:textSize="25sp" />
 
                     </FrameLayout>
 
                     <TextView
-                        android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
