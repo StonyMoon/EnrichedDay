@@ -59,6 +59,7 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private SliderLayout sliderLayout;
         private ImageButton pixiv;
         private ImageButton random;
+        private ImageView comic;
         private TextView dayText;
 
 
@@ -67,6 +68,7 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             sliderLayout = (SliderLayout) view.findViewById(R.id.everyday_slider);
             pixiv = (ImageButton) view.findViewById(R.id.everyday_pixiv_button);
             random = (ImageButton) view.findViewById(R.id.everyday_random_button);
+            comic = (ImageView) view.findViewById(R.id.everyday_comic_button);
             dayText = (TextView) view.findViewById(R.id.daily_text);
 
 
@@ -151,8 +153,10 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case TYPE_SLIDER:
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_everyday_slider, parent, false);
                 SliderHolder sliderHolder = new SliderHolder(view);
-                sliderHolder.pixiv.setOnClickListener(new SliderListener());
-                sliderHolder.random.setOnClickListener(new SliderListener());
+                SliderListener sliderListener = new SliderListener();
+                sliderHolder.pixiv.setOnClickListener(sliderListener);
+                sliderHolder.random.setOnClickListener(sliderListener);
+                sliderHolder.comic.setOnClickListener(sliderListener);
 
                 return sliderHolder;
             case TYPE_TITLE:
@@ -344,6 +348,10 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 case R.id.everyday_pixiv_button:
                     ((MainActivity) mContext).selectPage(2);
                     break;
+                case R.id.everyday_comic_button:
+                    ((MainActivity) mContext).selectDiscoveryFragmentPage(2);
+
+
             }
         }
     }

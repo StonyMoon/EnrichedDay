@@ -41,7 +41,6 @@ public class ComicDetailActivity extends AppCompatActivity implements View.OnCli
     private ActionBar actionBar;
     private Toolbar tb;
     private int id;
-    private FloatingActionButton playButton;
     private String coverUrl;
     private String evaluate;
     private String title;
@@ -72,7 +71,6 @@ public class ComicDetailActivity extends AppCompatActivity implements View.OnCli
         bgImage = (ImageView) findViewById(R.id.comic_detail_bg);
         stuffText = (TextView) findViewById(R.id.comic_staff);
         evaluateText = (TextView) findViewById(R.id.comic_detail_evaluate);
-        playButton = (FloatingActionButton) findViewById(R.id.comic_detail_play);
         //设置actionbar
         toolbar = (CollapsingToolbarLayout) findViewById(R.id.comic_detail_toolbar);
         chapterRecycleView = (RecyclerView) findViewById(R.id.chapter_recycler_view);
@@ -90,7 +88,6 @@ public class ComicDetailActivity extends AppCompatActivity implements View.OnCli
             actionBar.setDisplayShowTitleEnabled(true);
         }
 
-        playButton.setOnClickListener(this);
 
         initDetail(id);
 
@@ -134,15 +131,7 @@ public class ComicDetailActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.comic_detail_play:
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://bangumi.bilibili.com/anime/" + id));
-                startActivity(intent);
-                break;
 
-        }
 
     }
 }

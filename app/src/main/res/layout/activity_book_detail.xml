@@ -17,7 +17,7 @@
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
             android:id="@+id/book_detail_toolbar"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:contentScrim="#32000000"
+            app:contentScrim="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
@@ -32,7 +32,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-
+                    android:fitsSystemWindows="true"
                     android:id="@+id/book_detail_bg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

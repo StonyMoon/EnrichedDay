@@ -4,7 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
+import com.jcodecraeer.xrecyclerview.progressindicator.AVLoadingIndicatorView;
 import com.meo.stonymoon.enrichedday.MyFragmentPagerAdapter;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.bean.ChapterBean;
@@ -21,14 +24,22 @@ import okhttp3.Response;
 import static com.meo.stonymoon.enrichedday.util.HandleResponseUtil.handleChapterResponse;
 
 public class ComicChapterActivity extends AppCompatActivity {
-    List<String> imageUrlList = new ArrayList<>();
-    ViewPager pager;
+    private List<String> imageUrlList = new ArrayList<>();
+    private ViewPager pager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 设置全屏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // 移除标题栏
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
         setContentView(R.layout.activity_comic_chapter);
         pager = (ViewPager) findViewById(R.id.chapter_viewpager);
+
         String id = getIntent().getStringExtra("chapterId");
         loadPicture(id);
     }

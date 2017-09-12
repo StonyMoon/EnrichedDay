@@ -2,6 +2,7 @@ package com.meo.stonymoon.enrichedday.ui.discovery.child;
 
 import android.content.Intent;
 
+import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -18,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
+
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.adapter.EpisodeAdapter;
@@ -78,7 +79,6 @@ public class BangumiDetailActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         id = getIntent().getStringExtra("bangumiId");
         setContentView(R.layout.activity_bangumi_detail);
-        StatusBarUtil.setTransparent(this);
         coverImage = (ImageView) findViewById(R.id.bangumi_detail_cover_image);
         bgLayout = (RelativeLayout) findViewById(R.id.bangumi_detail_bar_bg);
         bgImage = (ImageView) findViewById(R.id.bangumi_detail_bg);
@@ -153,9 +153,9 @@ public class BangumiDetailActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bangumi_detail_play:
-                Intent intent = new Intent(this, VideoActivity.class);
-//                intent.setAction(Intent.ACTION_VIEW);
-//                intent.setData(Uri.parse("https://bangumi.bilibili.com/anime/" + id));
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://bangumi.bilibili.com/anime/" + id));
                 startActivity(intent);
                 break;
 

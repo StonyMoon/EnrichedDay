@@ -2,6 +2,7 @@ package com.meo.stonymoon.enrichedday.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,11 +31,13 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView titleView;
+        CardView cardView;
 
         public ViewHolder(View view) {
             super(view);
             imageView = (ImageView) view.findViewById(R.id.episode_image);
             titleView = (TextView) view.findViewById(R.id.episode_title);
+            cardView = (CardView) view.findViewById(R.id.episode_card_view);
         }
 
     }
@@ -52,7 +55,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bangumi_episode, parent, false);
         final EpisodeAdapter.ViewHolder holder = new EpisodeAdapter.ViewHolder(view);
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();

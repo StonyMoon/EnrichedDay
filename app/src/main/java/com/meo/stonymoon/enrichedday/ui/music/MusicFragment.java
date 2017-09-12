@@ -1,14 +1,12 @@
 package com.meo.stonymoon.enrichedday.ui.music;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Vibrator;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +14,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.meo.stonymoon.enrichedday.MainActivity;
 import com.meo.stonymoon.enrichedday.R;
 import com.meo.stonymoon.enrichedday.bean.BangumiDetailBean;
 import com.meo.stonymoon.enrichedday.bean.ComicDetailBean;
@@ -36,12 +37,15 @@ import okhttp3.Response;
 
 public class MusicFragment extends Fragment {
     private ShakeListener mShakeListener = null;
-    private ImageView loadImage;
-    private AnimationDrawable loadingAnimation;
-    private boolean flag = false;
+    private boolean isFirstStart = true;
     private ImageView coverImage;
     private TextView titleText;
     private LinearLayout randomLayout;
+    private ImageView loadingTopImage;
+    private ImageView loadingBottomImage;
+    private ImageView bg;
+
+
     public MusicFragment() {
 
     }
@@ -53,38 +57,13 @@ public class MusicFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        mShakeListener = new ShakeListener(getContext());
+        if (isFirstStart || ((MainActivity) getContext()).getSelectPage() != 0) {
+            stopShakeListener();
+            isFirstStart = false;
 
-
-        mShakeListener.setOnShakeListener(new ShakeListener.OnShakeListener() {
-            public void onShake() {
-                stopShakeListener();//防止再次响应
-                loadingAnimation.start();
-                Thread thread = new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        try {
-                            Thread.sleep(2000);
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getRandomBangumi();
-                                }
-                            });
-
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                thread.start();
-
-
-            }
-
-        });
-
+        } else {
+            startShakeListener();
+        }
     }
 
     /*
@@ -94,9 +73,7 @@ public class MusicFragment extends Fragment {
     public void onPause() {
         // 务必要在pause中注销 mSensorManager
         // 否则会造成界面退出后摇一摇依旧生效的bug
-        if (mShakeListener != null) {
-            mShakeListener.stop();
-        }
+        stopShakeListener();
         super.onPause();
     }
 
@@ -110,12 +87,25 @@ public class MusicFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_music, container, false);
-        loadImage = (ImageView) view.findViewById(R.id.music_load);
+        bg = (ImageView) view.findViewById(R.id.music_bg_view);
         coverImage = (ImageView) view.findViewById(R.id.recommend_cover_image);
         titleText = (TextView) view.findViewById(R.id.recommend_title);
         randomLayout = (LinearLayout) view.findViewById(R.id.music_random_layout);
-        loadingAnimation = (AnimationDrawable) loadImage.getBackground();
-        loadingAnimation.stop();
+        loadingTopImage = (ImageView) view.findViewById(R.id.music_loading_top_image);
+        loadingBottomImage = (ImageView) view.findViewById(R.id.music_loading_bottom_image);
+        mShakeListener = new ShakeListener(getContext());
+        mShakeListener.setOnShakeListener(new ShakeListener.OnShakeListener() {
+            public void onShake() {
+                stopShakeListener();//防止再次响应
+                startLoading();
+            }
+
+        });
+
+
+
+
+
         return view;
     }
 
@@ -133,6 +123,8 @@ public class MusicFragment extends Fragment {
     }
 
     private void getRandomBangumi() {
+
+
         final int seed = (int) (System.currentTimeMillis() % 6000);
         HttpUtil.sendOkHttpRequest("http://bangumi.bilibili.com/jsonp/seasoninfo/" + seed + ".ver?callback=seasonListCallback&jsonp=jsonp&_=1499651889555", new Callback() {
             @Override
@@ -150,15 +142,6 @@ public class MusicFragment extends Fragment {
                 Intent intent = new Intent(getContext(), BangumiDetailActivity.class);
                 intent.putExtra("bangumiId", "" + seed);
                 startActivity(intent);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingAnimation.stop();
-                    }
-                });
-
-                //setLayout(bean.result.cover,bean.result.title);
-
             }
         });
 
@@ -189,10 +172,6 @@ public class MusicFragment extends Fragment {
 
     }
 
-    private void getRandomBook() {
-
-
-    }
 
     private void getRandomReccomend() {
         long seed = System.currentTimeMillis();
@@ -205,13 +184,8 @@ public class MusicFragment extends Fragment {
             case 1:
                 getRandomComic();
                 break;
-            case 2:
-                getRandomBook();
-                break;
-
 
         }
-
 
     }
 
@@ -220,7 +194,7 @@ public class MusicFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                loadImage.setVisibility(View.GONE);
+
                 randomLayout.setVisibility(View.VISIBLE);
                 titleText.setText(title);
                 Picasso.with(getContext()).load(url).into(coverImage);
@@ -229,9 +203,46 @@ public class MusicFragment extends Fragment {
             }
         });
 
-
     }
 
+    private void startLoading() {
+        Glide.with(this.getContext()).load(R.drawable.music_bg)
+                .asGif()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .override(180, 180)
+                .into(bg);
+        ObjectAnimator animator1 = ObjectAnimator.ofFloat(
+                loadingTopImage,
+                "translationY",
+                -300);
+        ObjectAnimator animator2 = ObjectAnimator.ofFloat(
+                loadingBottomImage,
+                "translationY",
+                300);
+
+        ObjectAnimator animator3 = ObjectAnimator.ofFloat(
+                loadingTopImage,
+                "translationY",
+                0);
+        ObjectAnimator animator4 = ObjectAnimator.ofFloat(
+                loadingBottomImage,
+                "translationY",
+                0);
+
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(1000);
+
+        set.play(animator1).with(animator2)
+                .before(animator3).before(animator4);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                getRandomBangumi();
+            }
+        });
+        set.start();
+
+    }
 
 
 }

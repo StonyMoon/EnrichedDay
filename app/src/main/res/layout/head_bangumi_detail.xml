@@ -27,7 +27,7 @@
 
     </LinearLayout>
 
-    <!--又名-->
+
     <TextView
         android:id="@+id/bangumi_detail_evaluate"
         android:layout_width="wrap_content"
@@ -36,6 +36,7 @@
         android:textColor="@color/secondText" />
 
     <LinearLayout
+        android:layout_marginBottom="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -54,7 +55,10 @@
             android:layout_marginLeft="5dp"
             android:text="选集"
             android:textColor="@color/primaryText"
-            android:textSize="17sp" />
+            android:textSize="17sp"
+
+
+            />
 
     </LinearLayout>
 

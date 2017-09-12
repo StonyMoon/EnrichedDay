@@ -225,4 +225,8 @@ public class MainActivity extends AppCompatActivity
         discoveryFragment.selectPage(page);
     }
 
+    public int getSelectPage() {
+        return viewPager.getCurrentItem();
+    }
+
 }

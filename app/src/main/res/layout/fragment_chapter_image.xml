@@ -1,8 +1,17 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.meo.stonymoon.enrichedday.ui.discovery.child.ChapterImageFragment">
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:layout_centerInParent="true"
+        android:id="@+id/comic_loading_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorName="BallPulseIndicator"
+        app:indicator_color="@color/colorPrimary" />
 
     <com.meo.stonymoon.enrichedday.view.PinchImageView
         android:id="@+id/chapter_image"
@@ -10,4 +19,4 @@
         android:layout_height="match_parent" />
 
 
-</FrameLayout>
+</RelativeLayout>
