@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by A on 2017/7/11.
- */
 
 public class BangumiBean {
     public Result result;

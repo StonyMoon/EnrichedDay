@@ -47,7 +47,8 @@ public class VideoActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);//设置全屏
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-        playerStandard = (JCVideoPlayerStandard) findViewById(R.id.video);
+
+
         playerStandard.setVisibility(View.GONE);
 
         String cid = getIntent().getStringExtra("id");
