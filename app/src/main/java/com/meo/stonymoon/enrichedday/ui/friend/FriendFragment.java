@@ -93,6 +93,9 @@ public class FriendFragment extends Fragment {
 
 
                 PixivBean pb = HandleResponseUtil.handlePixivResponse(jsonBody);
+                if (pb == null || pb.pictureBean == null) {
+                    return;
+                }
                 allBeanList.addAll(pb.pictureBean);
 
                 for (itemNum = 0; itemNum < 20; itemNum++) {

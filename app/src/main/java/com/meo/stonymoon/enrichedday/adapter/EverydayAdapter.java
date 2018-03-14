@@ -55,94 +55,10 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<EverydayModel> modelList;
     private Context mContext;
 
-    private class SliderHolder extends RecyclerView.ViewHolder {
-        private SliderLayout sliderLayout;
-        private ImageButton pixiv;
-        private ImageButton random;
-        private ImageView comic;
-        private TextView dayText;
-
-
-        private SliderHolder(View view) {
-            super(view);
-            sliderLayout = (SliderLayout) view.findViewById(R.id.everyday_slider);
-            pixiv = (ImageButton) view.findViewById(R.id.everyday_pixiv_button);
-            random = (ImageButton) view.findViewById(R.id.everyday_random_button);
-            comic = (ImageView) view.findViewById(R.id.everyday_comic_button);
-            dayText = (TextView) view.findViewById(R.id.daily_text);
-
-
-            HttpUtil.sendOkHttpRequest("http://api.bilibili.com/x/web-show/res/loc?callback=jQuery17205969745067413896_1482805801285&jsonp=jsonp&pf=0&id=23&_=1482805801599", new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    final SliderBean sliderBean = HandleResponseUtil.handleSliderResponse(response.body().string());
-                    ((Activity) mContext).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (SliderBean.Data data : sliderBean.data) {
-                                TextSliderView customSliderView = new TextSliderView(mContext);
-                                customSliderView
-                                        .image(data.pic)
-                                        .setScaleType(BaseSliderView.ScaleType.Fit);
-                                sliderLayout.addSlider(customSliderView);
-                            }
-                            sliderLayout.setCustomAnimation(new DescriptionAnimation());
-                            sliderLayout.setDuration(2000);
-                        }
-                    });
-                }
-            });
-
-
-        }
-    }
-
-    private class TwoHolder extends RecyclerView.ViewHolder {
-        private ImageView imageView;
-        private TextView titleView;
-
-        private TwoHolder(View view) {
-            super(view);
-            imageView = (ImageView) view.findViewById(R.id.everyday_two_image);
-            titleView = (TextView) view.findViewById(R.id.everyday_two_title);
-        }
-    }
-
-    private class ThreeHolder extends RecyclerView.ViewHolder {
-        private ImageView imageView;
-        private TextView titleView;
-
-        private ThreeHolder(View view) {
-            super(view);
-            imageView = (ImageView) view.findViewById(R.id.everyday_three_image);
-            titleView = (TextView) view.findViewById(R.id.everyday_three_title);
-        }
-
-    }
-
-    private class TitleHolder extends RecyclerView.ViewHolder {
-        private TextView titleView;
-        private LinearLayout titleLayout;
-
-        private TitleHolder(View view) {
-            super(view);
-            titleView = (TextView) view.findViewById(R.id.everyday_title_text);
-            titleLayout = (LinearLayout) view.findViewById(R.id.everyday_title);
-        }
-
-    }
-
-
     public EverydayAdapter(List<EverydayModel> list) {
         modelList = list;
 
     }
-
 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (mContext == null) {
@@ -288,12 +204,10 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-
     @Override
     public int getItemCount() {
         return modelList.size();
     }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -336,6 +250,92 @@ public class EverydayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
+    private class SliderHolder extends RecyclerView.ViewHolder {
+        private SliderLayout sliderLayout;
+        private ImageButton pixiv;
+        private ImageButton random;
+        private ImageView comic;
+        private TextView dayText;
+
+
+        private SliderHolder(View view) {
+            super(view);
+            sliderLayout = (SliderLayout) view.findViewById(R.id.everyday_slider);
+            pixiv = (ImageButton) view.findViewById(R.id.everyday_pixiv_button);
+            random = (ImageButton) view.findViewById(R.id.everyday_random_button);
+            comic = (ImageView) view.findViewById(R.id.everyday_comic_button);
+            dayText = (TextView) view.findViewById(R.id.daily_text);
+
+
+            HttpUtil.sendOkHttpRequest("http://api.bilibili.com/x/web-show/res/loc?callback=jQuery17205969745067413896_1482805801285&jsonp=jsonp&pf=0&id=23&_=1482805801599", new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    final SliderBean sliderBean = HandleResponseUtil.handleSliderResponse(response.body().string());
+                    if (sliderBean == null) {
+                        return;
+                    }
+
+
+                    ((Activity) mContext).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (SliderBean.Data data : sliderBean.data) {
+                                TextSliderView customSliderView = new TextSliderView(mContext);
+                                customSliderView
+                                        .image(data.pic)
+                                        .setScaleType(BaseSliderView.ScaleType.Fit);
+                                sliderLayout.addSlider(customSliderView);
+                            }
+                            sliderLayout.setCustomAnimation(new DescriptionAnimation());
+                            sliderLayout.setDuration(2000);
+                        }
+                    });
+                }
+            });
+
+
+        }
+    }
+
+    private class TwoHolder extends RecyclerView.ViewHolder {
+        private ImageView imageView;
+        private TextView titleView;
+
+        private TwoHolder(View view) {
+            super(view);
+            imageView = (ImageView) view.findViewById(R.id.everyday_two_image);
+            titleView = (TextView) view.findViewById(R.id.everyday_two_title);
+        }
+    }
+
+    private class ThreeHolder extends RecyclerView.ViewHolder {
+        private ImageView imageView;
+        private TextView titleView;
+
+        private ThreeHolder(View view) {
+            super(view);
+            imageView = (ImageView) view.findViewById(R.id.everyday_three_image);
+            titleView = (TextView) view.findViewById(R.id.everyday_three_title);
+        }
+
+    }
+
+    private class TitleHolder extends RecyclerView.ViewHolder {
+        private TextView titleView;
+        private LinearLayout titleLayout;
+
+        private TitleHolder(View view) {
+            super(view);
+            titleView = (TextView) view.findViewById(R.id.everyday_title_text);
+            titleLayout = (LinearLayout) view.findViewById(R.id.everyday_title);
+        }
+
+    }
 
     class SliderListener implements View.OnClickListener {
 

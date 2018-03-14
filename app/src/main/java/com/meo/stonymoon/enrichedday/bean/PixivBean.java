@@ -11,6 +11,7 @@ import java.util.List;
 
 public class PixivBean {
 
+
     public List<PictureBean> pictureBean = new ArrayList<>();
 
 

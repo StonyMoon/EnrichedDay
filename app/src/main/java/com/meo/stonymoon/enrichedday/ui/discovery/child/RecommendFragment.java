@@ -197,6 +197,9 @@ public class RecommendFragment extends Fragment {
 
                 String jsonBody = response.body().string();
                 PixivBean pb = HandleResponseUtil.handlePixivResponse(jsonBody);
+                if (pb == null || pb.pictureBean == null) {
+                    return;
+                }
                 for (int i = 0; i < 6; i++) {
                     PixivBean.PictureBean b = pb.pictureBean.get(i);
                     //19为上面的行数总和
